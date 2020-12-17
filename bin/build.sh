@@ -11,12 +11,18 @@ aws_ecr_repository_url_with_tag=$2
 
 # Check that aws is installed
 which aws > /dev/null || { echo 'ERROR: aws-cli is not installed' ; exit 1; }
-
-# Connect into aws
-$(aws ecr get-login --no-include-email) || { echo 'ERROR: aws ecr login failed' ; exit 1; }
-
 # Check that docker is installed and running
 which docker > /dev/null && docker ps > /dev/null || { echo 'ERROR: docker is not running' ; exit 1; }
+
+# Connect into aws
+aws ecr get-login-password \
+    --region $AWS_DEFAULT_REGION \
+| docker login \
+    --username AWS \
+    --password-stdin $AWS_ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+#$(aws ecr get-login-password) || { echo 'ERROR: aws ecr login failed' ; exit 1; }
+
+
 
 # Some Useful Debug
 echo "Building $aws_ecr_repository_url_with_tag from $build_folder/Dockerfile"
