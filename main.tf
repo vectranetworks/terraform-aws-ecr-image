@@ -21,6 +21,17 @@ resource "null_resource" "ecr_image" {
 
   # Runs the build.sh script which builds the dockerfile and pushes to ecr
   provisioner "local-exec" {
-    command = "AWS_PROFILE=${var.aws_profile} AWS_DEFAULT_REGION=${var.aws_region} AWS_ACCOUNT=${data.aws_caller_identity.current.account_id} bash ${path.module}/bin/build.sh ${var.dockerfile_dir} ${var.ecr_repository_url}:${var.docker_image_tag}"
+    command = join(
+      " ",
+      [
+        "AWS_PROFILE=${var.aws_profile}",
+        "AWS_DEFAULT_REGION=${var.aws_region}",
+        "AWS_ACCOUNT=${data.aws_caller_identity.current.account_id}",
+        "EXECUTION_DIR=${var.execution_directory}",
+        "bash ${path.module}/bin/build.sh",
+        var.dockerfile_dir,
+        "${var.ecr_repository_url}:${var.docker_image_tag}",
+      ]
+    )
   }
 }

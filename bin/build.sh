@@ -38,8 +38,10 @@ aws ecr get-login-password \
 # Some Useful Debug
 echo "Building $aws_ecr_repository_url_with_tag from $build_folder/Dockerfile with GIT_VERSION $GIT_VERSION"
 
+pushd $EXECUTION_DIR
 # Build image
 docker build --build-arg GIT_VERSION=${GIT_VERSION} -t $aws_ecr_repository_url_with_tag $build_folder
+popd
 
 # Push image
 docker push $aws_ecr_repository_url_with_tag

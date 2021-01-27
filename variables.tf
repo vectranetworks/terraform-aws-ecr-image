@@ -23,3 +23,9 @@ variable "aws_region" {
   type = string
   description = "AWS_DEFAULT_REGION to set for bash commands."
 }
+
+variable "execution_directory" {
+  type        = string
+  description = "Directory to build docker image from if not intended to build within dockerfile_dir"
+  default     = "."
+}
