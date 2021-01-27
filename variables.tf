@@ -1,6 +1,6 @@
-variable "dockerfile_dir" {
+variable "dockerfile_file_path" {
   type = string
-  description = "The directory that contains the Dockerfile"
+  description = "The full path of the Dockerfile, including the Dockerfile itself"
 }
 
 variable "ecr_repository_url" {
