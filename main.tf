@@ -7,7 +7,7 @@ terraform {
 
 # Checks if build folder has changed
 data "external" "build_dir" {
-  program = ["bash", "${path.module}/bin/dir_md5.sh", dirname(var.docker_path)]
+  program = ["bash", "${path.module}/bin/dir_md5.sh", dirname(var.dockerfile_file_path)]
 }
 
 data "aws_caller_identity" "current" {}
@@ -16,7 +16,7 @@ data "aws_caller_identity" "current" {}
 resource "null_resource" "ecr_image" {
   triggers = {
     build_folder_content_md5 = data.external.build_dir.result.md5
-    build_number = filemd5(var.docker_path)
+    build_number = filemd5(var.dockerfile_file_path)
   }
 
   # Runs the build.sh script which builds the dockerfile and pushes to ecr
