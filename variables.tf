@@ -3,6 +3,11 @@ variable "dockerfile_file_path" {
   description = "The full path of the Dockerfile, including the Dockerfile itself"
 }
 
+variable "docker_path" {
+  type = string
+  description = "The path to use for build context"
+}
+
 variable "ecr_repository_url" {
   type        = string
   description = "Full url for the ECR repository"

@@ -7,7 +7,8 @@ set -e
 
 # This is the order of arguments
 dockerfile=$1
-aws_ecr_repository_url_with_tag=$2
+build_folder=$2
+aws_ecr_repository_url_with_tag=$3
 
 # Check that aws is installed
 which aws > /dev/null || { echo 'ERROR: aws-cli is not installed' ; exit 1; }
@@ -39,7 +40,7 @@ aws ecr get-login-password \
 echo "Building $aws_ecr_repository_url_with_tag from $build_folder/Dockerfile with GIT_VERSION $GIT_VERSION"
 
 # Build image
-docker build --build-arg GIT_VERSION=${GIT_VERSION} -t $aws_ecr_repository_url_with_tag --file $dockerfile
+docker build --build-arg GIT_VERSION=${GIT_VERSION} -t $aws_ecr_repository_url_with_tag --file $dockerfile $build_folder
 
 # Push image
 docker push $aws_ecr_repository_url_with_tag
